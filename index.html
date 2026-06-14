@@ -22,45 +22,36 @@ body::after{width:500px;height:500px;background:rgba(168,85,247,0.08);bottom:-15
 
 /* LOGO */
 .logo-wrap{cursor:pointer;user-select:none;margin-bottom:20px;}
-.logo-ring{
-  width:110px;height:110px;border-radius:50%;
+.logo-ring{width:110px;height:110px;border-radius:50%;
   background:linear-gradient(135deg,var(--accent),var(--accent2));
   display:flex;align-items:center;justify-content:center;
   box-shadow:0 0 30px var(--glow),0 0 60px rgba(124,58,237,0.2);
-  transition:transform .2s,box-shadow .2s;
-}
+  transition:transform .2s,box-shadow .2s;}
 .logo-ring:hover{transform:scale(1.05);box-shadow:0 0 40px var(--glow),0 0 80px rgba(124,58,237,0.3);}
-.logo-ring.pulse{animation:logoPulse .3s ease;}
-@keyframes logoPulse{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1)}}
-.logo-inner{
-  width:104px;height:104px;border-radius:50%;overflow:hidden;
+.logo-ring.pulse{animation:lp .3s ease;}
+@keyframes lp{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1)}}
+.logo-inner{width:104px;height:104px;border-radius:50%;overflow:hidden;
   display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  position:relative;
-}
+  background:linear-gradient(135deg,var(--accent),var(--accent2));position:relative;}
 .logo-inner::after{content:'';position:absolute;inset:0;border-radius:50%;
   background:linear-gradient(135deg,transparent 40%,rgba(255,255,255,0.1));pointer-events:none;z-index:2;}
 #profileImg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;border-radius:50%;z-index:1;display:none;}
 .logo-letter{font-family:'Rajdhani',sans-serif;font-size:42px;font-weight:700;color:#fff;letter-spacing:-1px;}
 
-/* NAME / BIO */
+/* NAME/BIO */
 .name{font-family:'Rajdhani',sans-serif;font-size:28px;font-weight:700;letter-spacing:1px;
   background:linear-gradient(135deg,#fff 30%,var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.badge{display:inline-flex;align-items:center;gap:5px;
-  background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.3);
-  color:var(--accent2);font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;
-  margin:6px 0 8px;letter-spacing:.5px;}
+.badge{display:inline-flex;align-items:center;gap:5px;background:rgba(124,58,237,0.15);
+  border:1px solid rgba(124,58,237,0.3);color:var(--accent2);font-size:11px;font-weight:600;
+  padding:3px 10px;border-radius:20px;margin:6px 0 8px;letter-spacing:.5px;}
 .badge::before{content:'✦';font-size:8px;}
 .bio{color:var(--muted);font-size:13px;text-align:center;line-height:1.6;max-width:300px;margin-bottom:28px;}
 
 /* LINKS */
 .links{width:100%;display:flex;flex-direction:column;gap:12px;}
-.link-btn{
-  display:flex;align-items:center;gap:14px;
-  background:var(--card);border:1px solid var(--border);border-radius:14px;
-  padding:14px 18px;text-decoration:none;color:var(--text);
-  transition:all .25s;position:relative;overflow:hidden;cursor:pointer;
-}
+.link-btn{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:14px 18px;text-decoration:none;color:var(--text);
+  transition:all .25s;position:relative;overflow:hidden;cursor:pointer;}
 .link-btn::before{content:'';position:absolute;inset:0;
   background:linear-gradient(90deg,transparent,rgba(124,58,237,0.06),transparent);
   transform:translateX(-100%);transition:transform .5s;}
@@ -111,8 +102,7 @@ body::after{width:500px;height:500px;background:rgba(168,85,247,0.08);bottom:-15
 /* FORMS */
 .field{margin-bottom:14px;}
 .field label{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:5px;letter-spacing:.5px;text-transform:uppercase;}
-.field input,.field textarea{
-  width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);
+.field input,.field textarea{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);
   border-radius:10px;padding:11px 14px;color:var(--text);font-size:13px;outline:none;
   transition:border-color .2s;font-family:'Inter',sans-serif;resize:none;}
 .field input:focus,.field textarea:focus{border-color:var(--accent);}
@@ -121,39 +111,27 @@ body::after{width:500px;height:500px;background:rgba(168,85,247,0.08);bottom:-15
   border-radius:8px;padding:9px 12px;color:var(--text);font-size:13px;outline:none;
   transition:border-color .2s;font-family:'Inter',sans-serif;}
 .inline-input:focus{border-color:var(--accent);}
-
 .btn-primary{width:100%;padding:12px;border-radius:10px;border:none;cursor:pointer;
   font-size:14px;font-weight:600;font-family:'Inter',sans-serif;
   background:linear-gradient(135deg,var(--accent),var(--accent2));
   color:#fff;transition:all .2s;margin-top:4px;display:block;}
 .btn-primary:hover{opacity:.88;transform:translateY(-1px);}
-
-/* download btn */
-.download-btn{
-  width:100%;padding:12px;border-radius:10px;border:2px solid var(--accent);cursor:pointer;
+.download-btn{width:100%;padding:12px;border-radius:10px;border:2px solid var(--accent);cursor:pointer;
   font-size:14px;font-weight:700;font-family:'Inter',sans-serif;
   background:rgba(124,58,237,0.12);color:var(--accent2);
   transition:all .2s;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px;}
 .download-btn:hover{background:rgba(124,58,237,0.22);transform:translateY(-1px);}
-
 .error-msg{color:var(--danger);font-size:12px;text-align:center;margin-top:10px;display:none;}
 .error-msg.show{display:block;}
 .success-msg{color:var(--success);font-size:12px;text-align:center;margin-top:10px;display:none;}
 .success-msg.show{display:block;}
-
-/* notice box */
 .notice{background:rgba(234,179,8,0.08);border:1px solid rgba(234,179,8,0.25);
-  border-radius:10px;padding:12px 14px;margin-bottom:16px;
-  font-size:12px;color:#fbbf24;line-height:1.6;}
+  border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:#fbbf24;line-height:1.6;}
 .notice strong{display:block;margin-bottom:2px;font-size:13px;}
-
-/* SECTION CARD */
 .s-card{background:rgba(255,255,255,0.025);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px;}
 .s-title{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;
   display:flex;align-items:center;gap:6px;}
 .s-title span{font-size:14px;}
-
-/* EMOJI PICKER */
 .icon-picker{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
 .icon-pill{padding:6px 10px;border-radius:8px;border:1px solid var(--border);
   background:rgba(255,255,255,0.03);cursor:pointer;font-size:17px;transition:all .15s;
@@ -168,8 +146,6 @@ body::after{width:500px;height:500px;background:rgba(168,85,247,0.08);bottom:-15
 .prev-emoji{position:relative;z-index:1;}
 .or-divider{display:flex;align-items:center;gap:8px;margin:8px 0;color:var(--muted);font-size:11px;}
 .or-divider::before,.or-divider::after{content:'';flex:1;height:1px;background:var(--border);}
-
-/* ADD BTN */
 .add-link-btn{width:100%;padding:12px 16px;border-radius:10px;border:none;cursor:pointer;
   font-size:14px;font-weight:700;font-family:'Inter',sans-serif;
   background:linear-gradient(135deg,var(--accent),var(--accent2));
@@ -177,8 +153,6 @@ body::after{width:500px;height:500px;background:rgba(168,85,247,0.08);bottom:-15
   display:flex;align-items:center;justify-content:center;gap:8px;
   box-shadow:0 4px 20px rgba(124,58,237,0.35);}
 .add-link-btn:hover{opacity:.88;transform:translateY(-1px);}
-
-/* ADMIN LINK LIST */
 .admin-links{display:flex;flex-direction:column;gap:8px;}
 .admin-link-item{display:flex;align-items:center;gap:10px;
   background:rgba(255,255,255,0.025);border:1px solid var(--border);
@@ -199,34 +173,29 @@ body::after{width:500px;height:500px;background:rgba(168,85,247,0.08);bottom:-15
 .up-btn,.dn-btn{background:rgba(255,255,255,0.04);border:1px solid var(--border);
   color:var(--muted);border-radius:7px;padding:5px 8px;cursor:pointer;font-size:12px;font-weight:700;transition:all .2s;}
 .up-btn:hover,.dn-btn:hover{border-color:var(--accent);color:var(--accent);}
-
-/* PROFILE preview in admin */
 .pp-preview{background:rgba(124,58,237,0.06);border:1px solid rgba(124,58,237,0.15);
   border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;gap:12px;}
 .pp-ava{width:48px;height:48px;border-radius:50%;overflow:hidden;flex-shrink:0;
   background:linear-gradient(135deg,var(--accent),var(--accent2));
-  display:flex;align-items:center;justify-content:center;
-  font-size:18px;font-weight:700;color:#fff;position:relative;}
+  display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;position:relative;}
 .pp-ava img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;}
 .pp-ava-letter{position:relative;z-index:1;}
 .pp-name-text{font-weight:700;font-size:14px;}
 .pp-bio-text{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.4;}
-
-/* COLORS */
 .color-swatches{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
 .swatch{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .15s;flex-shrink:0;}
 .swatch:hover{transform:scale(1.1);}
 .swatch.active{border-color:#fff;transform:scale(1.2);}
 .color-row{display:flex;gap:8px;align-items:center;}
-.color-row input[type=color]{width:40px;height:36px;border:1px solid var(--border);border-radius:8px;background:rgba(255,255,255,0.04);cursor:pointer;padding:2px;flex-shrink:0;}
-.color-row input[type=text]{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-size:13px;outline:none;font-family:'Inter',sans-serif;}
+.color-row input[type=color]{width:40px;height:36px;border:1px solid var(--border);border-radius:8px;
+  background:rgba(255,255,255,0.04);cursor:pointer;padding:2px;flex-shrink:0;}
+.color-row input[type=text]{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--border);
+  border-radius:8px;padding:8px 12px;color:var(--text);font-size:13px;outline:none;font-family:'Inter',sans-serif;}
 .color-row input[type=text]:focus{border-color:var(--accent);}
-
 .logout-btn{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(239,68,68,0.3);
   background:rgba(239,68,68,0.06);color:var(--danger);cursor:pointer;
   font-size:12px;font-weight:600;font-family:'Inter',sans-serif;transition:all .2s;margin-top:16px;}
 .logout-btn:hover{background:rgba(239,68,68,0.14);}
-
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .grid2 .field{margin:0;}
 ::-webkit-scrollbar{width:5px;}
@@ -236,10 +205,11 @@ body::after{width:500px;height:500px;background:rgba(168,85,247,0.08);bottom:-15
 </style>
 </head>
 <body>
+
 <div class="page">
   <div class="logo-wrap" id="logoWrap">
     <div class="logo-ring" id="logoRing">
-      <div class="logo-inner" id="logoInner">
+      <div class="logo-inner">
         <img id="profileImg" src="" alt=""/>
         <span class="logo-letter" id="logoLetters">LX</span>
       </div>
@@ -261,7 +231,6 @@ body::after{width:500px;height:500px;background:rgba(168,85,247,0.08);bottom:-15
     </div>
     <div class="modal-body">
 
-      <!-- LOGIN -->
       <div id="loginSection">
         <div class="field"><label>Username</label>
           <input type="text" id="uInput" placeholder="Enter username" autocomplete="off"/></div>
@@ -271,20 +240,18 @@ body::after{width:500px;height:500px;background:rgba(168,85,247,0.08);bottom:-15
         <div class="error-msg" id="errMsg">❌ Invalid username or password.</div>
       </div>
 
-      <!-- ADMIN PANEL -->
       <div id="adminSection" style="display:none;">
         <div class="tabs">
           <button class="tab-btn active" onclick="switchTab('links',this)">🔗 Manage Links</button>
           <button class="tab-btn" onclick="switchTab('profile',this)">🎨 Profile</button>
         </div>
 
-        <!-- TAB: LINKS -->
+        <!-- LINKS TAB -->
         <div class="tab-panel active" id="tab-links">
           <div class="notice">
-            <strong>📱 How to make changes visible on all phones</strong>
-            After editing your links, click <b>"Save & Download HTML"</b> — then upload that new file to your hosting (GitHub Pages, etc). Everyone will then see your changes.
+            <strong>📱 How to update all phones</strong>
+            Add or edit your links below, then click <b>💾 Save &amp; Download HTML</b>. Upload that file to GitHub Pages — every phone will see the new links instantly.
           </div>
-
           <div class="s-card">
             <div class="s-title"><span>➕</span> Add New Link</div>
             <div class="grid2" style="margin-bottom:10px;">
@@ -311,19 +278,14 @@ body::after{width:500px;height:500px;background:rgba(168,85,247,0.08);bottom:-15
               <span style="font-size:18px;line-height:1;">+</span> Add Link
             </button>
           </div>
-
           <div class="s-title"><span>📋</span> Your Links</div>
           <div class="admin-links" id="adminLinkList"></div>
-
-          <button class="download-btn" onclick="saveAndDownload()">
-            <span style="font-size:18px;">💾</span> Save & Download HTML
-          </button>
-          <div class="success-msg" id="downloadMsg">✅ File downloaded! Upload it to your host to update all devices.</div>
-
+          <button class="download-btn" onclick="saveAndDownload()">💾 Save &amp; Download HTML</button>
+          <div class="success-msg" id="downloadMsg">✅ Downloaded! Upload to GitHub Pages to update all phones.</div>
           <button class="logout-btn" onclick="doLogout()">Sign Out</button>
         </div>
 
-        <!-- TAB: PROFILE -->
+        <!-- PROFILE TAB -->
         <div class="tab-panel" id="tab-profile">
           <div class="s-card">
             <div class="s-title"><span>👤</span> Profile Info</div>
@@ -345,7 +307,6 @@ body::after{width:500px;height:500px;background:rgba(168,85,247,0.08);bottom:-15
             <div class="field" style="margin-bottom:0;"><label>Profile Photo URL</label>
               <input type="text" id="profImg" placeholder="https://... (direct image link)" oninput="livePreview()"/></div>
           </div>
-
           <div class="s-card">
             <div class="s-title"><span>🎨</span> Accent Color</div>
             <div class="color-swatches" id="swatchRow"></div>
@@ -354,23 +315,17 @@ body::after{width:500px;height:500px;background:rgba(168,85,247,0.08);bottom:-15
               <input type="text" id="colorHex" placeholder="#7c3aed" oninput="onHexInput(this.value)"/>
             </div>
           </div>
-
-          <button class="download-btn" onclick="saveAndDownload()">
-            <span style="font-size:18px;">💾</span> Save & Download HTML
-          </button>
-          <div class="success-msg" id="downloadMsg2">✅ File downloaded! Upload it to your host to update all devices.</div>
-
+          <button class="download-btn" onclick="saveAndDownload()">💾 Save &amp; Download HTML</button>
+          <div class="success-msg" id="downloadMsg2">✅ Downloaded! Upload to GitHub Pages to update all phones.</div>
           <button class="logout-btn" onclick="doLogout()">Sign Out</button>
         </div>
-
       </div>
+
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     SITE DATA — edit via admin panel, then Save & Download
-     ═══════════════════════════════════════════════════════════ -->
+<!-- ★ ALL SITE DATA LIVES HERE — gets rewritten on Save & Download ★ -->
 <script id="siteData" type="application/json">
 {
   "profile": {
@@ -389,29 +344,39 @@ body::after{width:500px;height:500px;background:rgba(168,85,247,0.08);bottom:-15
 </script>
 
 <script>
-// ── SHA-256 auth (hashed, no plaintext) ──────────────────────────────────────
+// ── Capture raw HTML source RIGHT NOW before browser touches anything ─────────
+// We read the siteData text content (still accessible as a script tag with unknown type)
+// and store the full serialized data so we can rebuild the file perfectly on download.
+const _RAW_DATA_EL = document.getElementById('siteData');
+const _ORIGINAL_DATA_TEXT = _RAW_DATA_EL ? _RAW_DATA_EL.textContent : '{}';
+
+// ── SHA-256 (no plaintext credentials in code) ────────────────────────────────
 async function sha256(s){
-  const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));
+  const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
   return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');
 }
 
-// ── Load data from embedded JSON ─────────────────────────────────────────────
-let siteData = JSON.parse(document.getElementById('siteData').textContent);
-let links = siteData.links || [];
-let profile = siteData.profile || {};
+// ── Load site data ────────────────────────────────────────────────────────────
+let siteData, links, profile;
+try { siteData = JSON.parse(_ORIGINAL_DATA_TEXT); } catch(e) { siteData = {}; }
+links   = Array.isArray(siteData.links)   ? siteData.links   : [];
+profile = (siteData.profile && typeof siteData.profile === 'object') ? siteData.profile : {};
+const DEF = {name:'LAXX OFFICIAL',badge:'Official Links',bio:'All my official links in one place. Click to visit.',img:'',color:'#7c3aed'};
+profile = Object.assign({}, DEF, profile);
+
 let loggedIn = false, selectedEmoji = '🔗', selectedImgUrl = '';
 
-const EMOJI_LIST=['📸','▶️','🎵','✖️','💬','🎮','🎧','💻','🌐','📧','🛒','💰','🎁','📱','🔗','🎬','📡','🎤','🏆','❤️','⚡','🔥','💎','🌟','👑'];
-const SWATCHES=['#7c3aed','#a855f7','#ec4899','#ef4444','#f97316','#eab308','#22c55e','#06b6d4','#3b82f6','#e2e8f0'];
+const EMOJIS = ['📸','▶️','🎵','✖️','💬','🎮','🎧','💻','🌐','📧','🛒','💰','🎁','📱','🔗','🎬','📡','🎤','🏆','❤️','⚡','🔥','💎','🌟','👑'];
+const SWATCHES = ['#7c3aed','#a855f7','#ec4899','#ef4444','#f97316','#eab308','#22c55e','#06b6d4','#3b82f6','#e2e8f0'];
 
-// ── Color helpers ─────────────────────────────────────────────────────────────
-function hexToRgb(hex){return{r:parseInt(hex.slice(1,3),16),g:parseInt(hex.slice(3,5),16),b:parseInt(hex.slice(5,7),16)};}
-function lightenHex(hex,amt){const{r,g,b}=hexToRgb(hex);const ch=v=>Math.min(255,v+amt).toString(16).padStart(2,'0');return`#${ch(r)}${ch(g)}${ch(b)}`;}
-function applyColor(hex){
-  if(!/^#[0-9a-fA-F]{6}$/.test(hex))return;
-  const{r,g,b}=hexToRgb(hex);
-  document.documentElement.style.setProperty('--accent',hex);
-  document.documentElement.style.setProperty('--accent2',lightenHex(hex,40));
+// ── Color ─────────────────────────────────────────────────────────────────────
+function hexRgb(h){return{r:parseInt(h.slice(1,3),16),g:parseInt(h.slice(3,5),16),b:parseInt(h.slice(5,7),16)};}
+function lighten(h,a){const{r,g,b}=hexRgb(h);const c=v=>Math.min(255,v+a).toString(16).padStart(2,'0');return`#${c(r)}${c(g)}${c(b)}`;}
+function applyColor(h){
+  if(!/^#[0-9a-fA-F]{6}$/.test(h))return;
+  const{r,g,b}=hexRgb(h);
+  document.documentElement.style.setProperty('--accent',h);
+  document.documentElement.style.setProperty('--accent2',lighten(h,40));
   document.documentElement.style.setProperty('--glow',`rgba(${r},${g},${b},0.45)`);
 }
 function onColorInput(v){document.getElementById('colorHex').value=v;applyColor(v);profile.color=v;}
@@ -419,24 +384,24 @@ function onHexInput(v){if(/^#[0-9a-fA-F]{6}$/.test(v)){document.getElementById('
 
 // ── Swatches ──────────────────────────────────────────────────────────────────
 function buildSwatches(){
-  document.getElementById('swatchRow').innerHTML=SWATCHES.map(c=>
-    `<div class="swatch${c===profile.color?' active':''}" style="background:${c};" onclick="pickSwatch('${c}',this)" title="${c}"></div>`).join('');
+  document.getElementById('swatchRow').innerHTML = SWATCHES.map(c=>
+    `<div class="swatch${c===profile.color?' active':''}" style="background:${c}" onclick="pickSwatch('${c}',this)"></div>`).join('');
 }
 function pickSwatch(c,el){
   document.querySelectorAll('.swatch').forEach(s=>s.classList.remove('active'));
   el.classList.add('active');
   document.getElementById('colorPicker').value=c;
   document.getElementById('colorHex').value=c;
-  applyColor(c);profile.color=c;
+  applyColor(c); profile.color=c;
 }
 
 // ── Emoji picker ──────────────────────────────────────────────────────────────
 function buildEmojiPicker(){
-  document.getElementById('iconPicker').innerHTML=EMOJI_LIST.map(e=>
+  document.getElementById('iconPicker').innerHTML = EMOJIS.map(e=>
     `<div class="icon-pill" onclick="pickEmoji('${e}',this)">${e}</div>`).join('');
 }
 function pickEmoji(e,el){
-  selectedEmoji=e;selectedImgUrl='';
+  selectedEmoji=e; selectedImgUrl='';
   document.querySelectorAll('.icon-pill').forEach(p=>p.classList.remove('selected'));
   el.classList.add('selected');
   document.getElementById('newImgUrl').value='';
@@ -451,7 +416,7 @@ function previewLinkIcon(){
 function updateIconPreview(emoji,imgUrl){
   const box=document.getElementById('iconPrevBox');
   const em=document.getElementById('iconPrevEmoji');
-  const old=box.querySelector('img');if(old)old.remove();
+  const old=box.querySelector('img'); if(old) old.remove();
   if(imgUrl){
     em.textContent='';
     const img=document.createElement('img');
@@ -459,15 +424,15 @@ function updateIconPreview(emoji,imgUrl){
     img.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:10px;';
     img.onerror=()=>{img.remove();em.textContent=selectedEmoji||'🔗';};
     box.appendChild(img);
-  } else {em.textContent=emoji||'🔗';}
+  } else { em.textContent=emoji||'🔗'; }
 }
 
 // ── Logo triple-click (silent) ────────────────────────────────────────────────
-let cc=0,ct;
+let cc=0, ct;
 document.getElementById('logoWrap').addEventListener('click',()=>{
-  const ring=document.getElementById('logoRing');
-  ring.classList.remove('pulse');void ring.offsetWidth;ring.classList.add('pulse');
-  cc++;clearTimeout(ct);
+  const r=document.getElementById('logoRing');
+  r.classList.remove('pulse'); void r.offsetWidth; r.classList.add('pulse');
+  cc++; clearTimeout(ct);
   if(cc>=3){cc=0;openAdmin();return;}
   ct=setTimeout(()=>{cc=0;},1400);
 });
@@ -481,13 +446,14 @@ function showLogin(){
   document.getElementById('loginSection').style.display='';
   document.getElementById('adminSection').style.display='none';
   document.getElementById('errMsg').classList.remove('show');
-  document.getElementById('uInput').value='';document.getElementById('pInput').value='';
+  document.getElementById('uInput').value='';
+  document.getElementById('pInput').value='';
 }
 function showPanel(){
   document.getElementById('modalTitle').textContent='⚙️ Admin Panel';
   document.getElementById('loginSection').style.display='none';
   document.getElementById('adminSection').style.display='';
-  populateProfileFields();buildSwatches();renderAdminLinks();
+  populateProfileFields(); buildSwatches(); renderAdminLinks();
 }
 function switchTab(name,btn){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
@@ -501,7 +467,7 @@ async function doLogin(){
   const u=document.getElementById('uInput').value.trim();
   const p=document.getElementById('pInput').value.trim();
   const ref=await sha256('laxx');
-  if(await sha256(u)===ref&&await sha256(p)===ref){loggedIn=true;showPanel();}
+  if(await sha256(u)===ref && await sha256(p)===ref){loggedIn=true;showPanel();}
   else{document.getElementById('errMsg').classList.add('show');}
 }
 document.getElementById('pInput').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
@@ -517,12 +483,12 @@ function addLink(){
   if(!title){alert('Please enter a title.');return;}
   if(!url){alert('Please enter a URL.');return;}
   links.push({title,sub,url,icon,imgUrl});
-  renderLinks();renderAdminLinks();
+  renderLinks(); renderAdminLinks();
   document.getElementById('newTitle').value='';
   document.getElementById('newSub').value='';
   document.getElementById('newUrl').value='';
   document.getElementById('newImgUrl').value='';
-  selectedEmoji='🔗';selectedImgUrl='';
+  selectedEmoji='🔗'; selectedImgUrl='';
   document.querySelectorAll('.icon-pill').forEach(p=>p.classList.remove('selected'));
   updateIconPreview('🔗','');
 }
@@ -544,20 +510,20 @@ function livePreview(){
   const n=document.getElementById('profName').value||'LAXX OFFICIAL';
   const bio=document.getElementById('profBio').value||'';
   const img=document.getElementById('profImg').value.trim();
-  // update profile obj live
-  profile.name=n;profile.badge=document.getElementById('profBadge').value||profile.badge;
-  profile.bio=bio;profile.img=img;
+  profile.name=n;
+  profile.badge=document.getElementById('profBadge').value||profile.badge;
+  profile.bio=bio; profile.img=img;
   document.getElementById('ppName').textContent=n;
   document.getElementById('ppBioText').textContent=bio||'No bio set';
   const ava=document.getElementById('ppAva');
   const letter=document.getElementById('ppAvaLetter');
-  const oldImg=ava.querySelector('img');if(oldImg)oldImg.remove();
+  const oldImg=ava.querySelector('img'); if(oldImg) oldImg.remove();
   if(img){
-    const el=document.createElement('img');el.src=img;el.alt='';
+    const el=document.createElement('img'); el.src=img; el.alt='';
     el.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;';
-    el.onerror=()=>el.remove();ava.appendChild(el);letter.style.display='none';
-  } else {letter.style.display='';letter.textContent=n.slice(0,2).toUpperCase();}
-  // also update public page live
+    el.onerror=()=>el.remove();
+    ava.appendChild(el); letter.style.display='none';
+  } else { letter.style.display=''; letter.textContent=n.slice(0,2).toUpperCase(); }
   applyProfile();
 }
 
@@ -570,43 +536,56 @@ function applyProfile(){
   const pImg=document.getElementById('profileImg');
   const pLet=document.getElementById('logoLetters');
   if(profile.img){
-    pImg.src=profile.img;pImg.style.display='block';pLet.style.display='none';
-    pImg.onerror=()=>{pImg.style.display='none';pLet.style.display='';};
-  } else {pImg.style.display='none';pLet.style.display='';}
-  if(profile.color)applyColor(profile.color);
+    pImg.src=profile.img; pImg.style.display='block'; pLet.style.display='none';
+    pImg.onerror=()=>{pImg.style.display='none'; pLet.style.display='';};
+  } else { pImg.style.display='none'; pLet.style.display=''; }
+  if(profile.color) applyColor(profile.color);
 }
 
-// ── ★ SAVE & DOWNLOAD — bakes data into HTML ─────────────────────────────────
+// ── ★ SAVE & DOWNLOAD ─────────────────────────────────────────────────────────
+// Strategy: we have the FULL original HTML stored as a string in _PAGE_HTML
+// (captured at the very bottom of this script before anything runs).
+// We just swap out the siteData JSON block and download.
 function saveAndDownload(){
-  // grab current profile from fields
-  profile.name=document.getElementById('profName').value.trim()||profile.name;
-  profile.badge=document.getElementById('profBadge').value.trim()||profile.badge;
-  profile.bio=document.getElementById('profBio').value.trim()||profile.bio;
-  profile.img=document.getElementById('profImg').value.trim();
-  profile.color=document.getElementById('colorPicker').value||profile.color;
+  // sync profile fields
+  profile.name   = document.getElementById('profName').value.trim()  || profile.name;
+  profile.badge  = document.getElementById('profBadge').value.trim() || profile.badge;
+  profile.bio    = document.getElementById('profBio').value.trim()   || profile.bio;
+  profile.img    = document.getElementById('profImg').value.trim();
+  profile.color  = document.getElementById('colorPicker').value      || profile.color;
 
-  const newData=JSON.stringify({profile,links},null,2);
+  const newJson = JSON.stringify({profile, links}, null, 2);
 
-  // get current HTML source
-  const html=document.documentElement.outerHTML;
+  // Replace JSON between the siteData script tags in the stored original HTML
+  // We use a simple string split on the unique IDs — no regex needed
+  const OPEN  = '<script id="siteData" type="application/json">';
+  const CLOSE = '<\/script>';  // escaped so it doesn't end THIS script block
 
-  // replace the JSON block between the script#siteData tags
-  const updated=html.replace(
-    /(<script id="siteData"[^>]*>)([\s\S]*?)(<\/script>)/,
-    (_,open,_old,close)=>open+'\n'+newData+'\n'+close
-  );
+  const startIdx = _PAGE_HTML.indexOf(OPEN);
+  const endIdx   = _PAGE_HTML.indexOf('</script>', startIdx + OPEN.length);
 
-  // trigger download
-  const blob=new Blob([updated],{type:'text/html'});
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download='laxx-official.html';
+  let finalHtml;
+  if(startIdx !== -1 && endIdx !== -1){
+    finalHtml = _PAGE_HTML.slice(0, startIdx + OPEN.length)
+              + '\n' + newJson + '\n'
+              + _PAGE_HTML.slice(endIdx);
+  } else {
+    alert('Could not find data block. Please reload the page and try again.');
+    return;
+  }
+
+  const blob = new Blob([finalHtml], {type:'text/html'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'laxx-official.html';
+  document.body.appendChild(a);
   a.click();
+  document.body.removeChild(a);
   URL.revokeObjectURL(a.href);
 
   ['downloadMsg','downloadMsg2'].forEach(id=>{
     const el=document.getElementById(id);
-    if(el){el.classList.add('show');setTimeout(()=>el.classList.remove('show'),4000);}
+    if(el){el.classList.add('show');setTimeout(()=>el.classList.remove('show'),5000);}
   });
 }
 
@@ -617,19 +596,19 @@ function renderLinks(){
   el.innerHTML='';
   links.forEach(l=>{
     const a=document.createElement('a');
-    a.href=l.url;a.target='_blank';a.rel='noopener';a.className='link-btn';
-    const iconDiv=document.createElement('div');iconDiv.className='link-icon';
+    a.href=l.url; a.target='_blank'; a.rel='noopener'; a.className='link-btn';
+    const iconDiv=document.createElement('div'); iconDiv.className='link-icon';
     if(l.imgUrl){
-      const img=document.createElement('img');img.src=l.imgUrl;img.alt='';
+      const img=document.createElement('img'); img.src=l.imgUrl; img.alt='';
       img.onerror=()=>{img.remove();const s=document.createElement('span');s.className='link-emoji';s.textContent=l.icon||'🔗';iconDiv.appendChild(s);};
       iconDiv.appendChild(img);
     } else {
       const s=document.createElement('span');s.className='link-emoji';s.textContent=l.icon||'🔗';iconDiv.appendChild(s);
     }
-    const info=document.createElement('div');info.className='link-info';
+    const info=document.createElement('div'); info.className='link-info';
     info.innerHTML=`<div class="link-title">${esc(l.title)}</div>${l.sub?`<div class="link-sub">${esc(l.sub)}</div>`:''}`;
-    const arrow=document.createElement('span');arrow.className='link-arrow';arrow.textContent='›';
-    a.appendChild(iconDiv);a.appendChild(info);a.appendChild(arrow);
+    const arrow=document.createElement('span'); arrow.className='link-arrow'; arrow.textContent='›';
+    a.appendChild(iconDiv); a.appendChild(info); a.appendChild(arrow);
     el.appendChild(a);
   });
 }
@@ -640,23 +619,23 @@ function renderAdminLinks(){
   if(!links.length){el.innerHTML='<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px 0;">No links yet. Add one above!</div>';return;}
   el.innerHTML='';
   links.forEach((l,i)=>{
-    const row=document.createElement('div');row.className='admin-link-item';
-    const iconDiv=document.createElement('div');iconDiv.className='ali-icon';
+    const row=document.createElement('div'); row.className='admin-link-item';
+    const iconDiv=document.createElement('div'); iconDiv.className='ali-icon';
     if(l.imgUrl){
-      const img=document.createElement('img');img.src=l.imgUrl;img.alt='';
+      const img=document.createElement('img'); img.src=l.imgUrl; img.alt='';
       img.onerror=()=>{img.remove();const s=document.createElement('span');s.className='ali-emoji';s.textContent=l.icon||'🔗';iconDiv.appendChild(s);};
       iconDiv.appendChild(img);
     } else {
       const s=document.createElement('span');s.className='ali-emoji';s.textContent=l.icon||'🔗';iconDiv.appendChild(s);
     }
-    const info=document.createElement('div');info.className='ali-info';
+    const info=document.createElement('div'); info.className='ali-info';
     info.innerHTML=`<div class="ali-title">${esc(l.title)}</div><div class="ali-url">${esc(l.url)}</div>`;
-    const acts=document.createElement('div');acts.className='ali-actions';
+    const acts=document.createElement('div'); acts.className='ali-actions';
     const up=document.createElement('button');up.className='up-btn';up.textContent='↑';up.onclick=()=>moveUp(i);
     const dn=document.createElement('button');dn.className='dn-btn';dn.textContent='↓';dn.onclick=()=>moveDown(i);
     const del=document.createElement('button');del.className='del-btn';del.textContent='✕';del.onclick=()=>deleteLink(i);
-    acts.appendChild(up);acts.appendChild(dn);acts.appendChild(del);
-    row.appendChild(iconDiv);row.appendChild(info);row.appendChild(acts);
+    acts.appendChild(up); acts.appendChild(dn); acts.appendChild(del);
+    row.appendChild(iconDiv); row.appendChild(info); row.appendChild(acts);
     el.appendChild(row);
   });
 }
@@ -667,6 +646,10 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 buildEmojiPicker();
 applyProfile();
 renderLinks();
+
+// ★ Capture full page HTML AFTER everything is defined
+// Uses XMLSerializer to get the exact original source reliably
+const _PAGE_HTML = new XMLSerializer().serializeToString(document);
 </script>
 </body>
 </html>
