@@ -5,6 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>LAXX OFFICIAL</title>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAcTWCnwX7qeSYtdvtH1XUfJqofzF0Vqng",
+    authDomain: "inktree-53fd2.firebaseapp.com",
+    projectId: "inktree-53fd2",
+    storageBucket: "inktree-53fd2.firebasestorage.app",
+    messagingSenderId: "756785765490",
+    appId: "1:756785765490:web:b207fbc280a5bd31f976eb",
+    measurementId: "G-SX6KEVF867"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const SITE_DOC = doc(db, "site", "main");
+
+  // Expose helpers globally so the regular (non-module) script can use them
+  window.__fb = { db, SITE_DOC, getDoc, setDoc };
+</script>
 <style>
 :root{
   --bg:#0a0a0f;--card:#12121a;--border:#1e1e2e;
@@ -249,8 +270,8 @@ body::after{width:500px;height:500px;background:rgba(168,85,247,0.08);bottom:-15
         <!-- LINKS TAB -->
         <div class="tab-panel active" id="tab-links">
           <div class="notice">
-            <strong>📱 How to update all phones</strong>
-            Add or edit your links below, then click <b>💾 Save &amp; Download HTML</b>. Upload that file to GitHub Pages — every phone will see the new links instantly.
+            <strong>☁️ How updates work</strong>
+            Add or edit your links below, then click <b>☁️ Save Changes</b>. All devices will see the update instantly after a refresh — no re-uploading files needed.
           </div>
           <div class="s-card">
             <div class="s-title"><span>➕</span> Add New Link</div>
@@ -280,8 +301,8 @@ body::after{width:500px;height:500px;background:rgba(168,85,247,0.08);bottom:-15
           </div>
           <div class="s-title"><span>📋</span> Your Links</div>
           <div class="admin-links" id="adminLinkList"></div>
-          <button class="download-btn" onclick="saveAndDownload()">💾 Save &amp; Download HTML</button>
-          <div class="success-msg" id="downloadMsg">✅ Downloaded! Upload to GitHub Pages to update all phones.</div>
+          <button class="download-btn" onclick="saveAndDownload()">☁️ Save Changes</button>
+          <div class="success-msg" id="downloadMsg"></div>
           <button class="logout-btn" onclick="doLogout()">Sign Out</button>
         </div>
 
@@ -315,8 +336,8 @@ body::after{width:500px;height:500px;background:rgba(168,85,247,0.08);bottom:-15
               <input type="text" id="colorHex" placeholder="#7c3aed" oninput="onHexInput(this.value)"/>
             </div>
           </div>
-          <button class="download-btn" onclick="saveAndDownload()">💾 Save &amp; Download HTML</button>
-          <div class="success-msg" id="downloadMsg2">✅ Downloaded! Upload to GitHub Pages to update all phones.</div>
+          <button class="download-btn" onclick="saveAndDownload()">☁️ Save Changes</button>
+          <div class="success-msg" id="downloadMsg2"></div>
           <button class="logout-btn" onclick="doLogout()">Sign Out</button>
         </div>
       </div>
@@ -542,11 +563,10 @@ function applyProfile(){
   if(profile.color) applyColor(profile.color);
 }
 
-// ── ★ SAVE & DOWNLOAD ─────────────────────────────────────────────────────────
-// Strategy: we have the FULL original HTML stored as a string in _PAGE_HTML
-// (captured at the very bottom of this script before anything runs).
-// We just swap out the siteData JSON block and download.
-function saveAndDownload(){
+// ── ★ SAVE TO CLOUD (Firestore) ───────────────────────────────────────────────
+// Writes profile + links to Firestore so EVERY device loads the same data
+// instantly on next page load/refresh — no manual file re-upload needed.
+async function saveAndDownload(){
   // sync profile fields
   profile.name   = document.getElementById('profName').value.trim()  || profile.name;
   profile.badge  = document.getElementById('profBadge').value.trim() || profile.badge;
@@ -554,41 +574,27 @@ function saveAndDownload(){
   profile.img    = document.getElementById('profImg').value.trim();
   profile.color  = document.getElementById('colorPicker').value      || profile.color;
 
-  const newJson = JSON.stringify({profile, links}, null, 2);
+  const showMsgs = (ok)=>{
+    ['downloadMsg','downloadMsg2'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el){
+        el.textContent = ok ? '✅ Saved! All devices will see this on next refresh.' : '❌ Save failed. Check your internet connection.';
+        el.style.color = ok ? '' : 'var(--danger)';
+        el.classList.add('show');
+        setTimeout(()=>el.classList.remove('show'),5000);
+      }
+    });
+  };
 
-  // Replace JSON between the siteData script tags in the stored original HTML
-  // We use a simple string split on the unique IDs — no regex needed
-  // SCRIPT_CLOSE is built by concatenation so the literal closing tag never
-  // appears in this source file (which would prematurely end this block).
-  const SCRIPT_CLOSE = '</scr' + 'ipt>';
-  const OPEN  = '<script id="siteData" type="application/json">';
-
-  const startIdx = _PAGE_HTML.indexOf(OPEN);
-  const endIdx   = _PAGE_HTML.indexOf(SCRIPT_CLOSE, startIdx + OPEN.length);
-
-  let finalHtml;
-  if(startIdx !== -1 && endIdx !== -1){
-    finalHtml = _PAGE_HTML.slice(0, startIdx + OPEN.length)
-              + '\n' + newJson + '\n'
-              + _PAGE_HTML.slice(endIdx);
-  } else {
-    alert('Could not find data block. Please reload the page and try again.');
-    return;
+  try{
+    if(!window.__fb) throw new Error('Firebase not loaded');
+    const { setDoc, SITE_DOC } = window.__fb;
+    await setDoc(SITE_DOC, { profile, links });
+    showMsgs(true);
+  }catch(e){
+    console.error('Cloud save failed:', e);
+    showMsgs(false);
   }
-
-  const blob = new Blob([finalHtml], {type:'text/html'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'laxx-official.html';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(a.href);
-
-  ['downloadMsg','downloadMsg2'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el){el.classList.add('show');setTimeout(()=>el.classList.remove('show'),5000);}
-  });
 }
 
 // ── Render public links ───────────────────────────────────────────────────────
@@ -645,13 +651,36 @@ function renderAdminLinks(){
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
 // ── Init ──────────────────────────────────────────────────────────────────────
+// ★ Capture full page HTML BEFORE we overwrite siteData, so saveAndDownload
+// (kept as a backup/manual option) still works off the original markup.
+const _PAGE_HTML = new XMLSerializer().serializeToString(document);
+
 buildEmojiPicker();
 applyProfile();
 renderLinks();
 
-// ★ Capture full page HTML AFTER everything is defined
-// Uses XMLSerializer to get the exact original source reliably
-const _PAGE_HTML = new XMLSerializer().serializeToString(document);
+// ── Load from Firestore (cloud sync across all devices) ───────────────────────
+async function loadFromCloud(){
+  try{
+    if(!window.__fb) return; // firebase module didn't load (offline/blocked)
+    const { getDoc, SITE_DOC } = window.__fb;
+    const snap = await getDoc(SITE_DOC);
+    if(snap.exists()){
+      const cloud = snap.data();
+      if(cloud.profile && typeof cloud.profile === 'object'){
+        profile = Object.assign({}, DEF, cloud.profile);
+      }
+      if(Array.isArray(cloud.links)){
+        links = cloud.links;
+      }
+      applyProfile();
+      renderLinks();
+    }
+  }catch(e){
+    console.warn('Could not load cloud data, using built-in defaults.', e);
+  }
+}
+loadFromCloud();
 </script>
 </body>
 </html>
