@@ -680,7 +680,29 @@ async function loadFromCloud(){
     console.warn('Could not load cloud data, using built-in defaults.', e);
   }
 }
-loadFromCloud();
+loadFromCloud(async function loadFromCloud(){
+  try{
+    const { getDoc, SITE_DOC } = window.__fb;
+
+    console.log("Loading Firestore...");
+
+    const snap = await getDoc(SITE_DOC);
+
+    console.log("Exists:", snap.exists());
+    console.log("Data:", snap.data());
+
+    if(snap.exists()){
+      const cloud = snap.data();
+      if(cloud.profile) profile = cloud.profile;
+      if(cloud.links) links = cloud.links;
+
+      applyProfile();
+      renderLinks();
+    }
+  }catch(e){
+    console.error(e);
+  }
+});
 </script>
 </body>
 </html>
