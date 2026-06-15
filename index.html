@@ -558,11 +558,13 @@ function saveAndDownload(){
 
   // Replace JSON between the siteData script tags in the stored original HTML
   // We use a simple string split on the unique IDs — no regex needed
+  // SCRIPT_CLOSE is built by concatenation so the literal closing tag never
+  // appears in this source file (which would prematurely end this block).
+  const SCRIPT_CLOSE = '</scr' + 'ipt>';
   const OPEN  = '<script id="siteData" type="application/json">';
-  const CLOSE = '<\/script>';  // escaped so it doesn't end THIS script block
 
   const startIdx = _PAGE_HTML.indexOf(OPEN);
-  const endIdx   = _PAGE_HTML.indexOf('</script>', startIdx + OPEN.length);
+  const endIdx   = _PAGE_HTML.indexOf(SCRIPT_CLOSE, startIdx + OPEN.length);
 
   let finalHtml;
   if(startIdx !== -1 && endIdx !== -1){
