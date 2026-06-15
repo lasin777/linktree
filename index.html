@@ -662,47 +662,23 @@ renderLinks();
 // ── Load from Firestore (cloud sync across all devices) ───────────────────────
 async function loadFromCloud(){
   try{
-    if(!window.__fb) return; // firebase module didn't load (offline/blocked)
     const { getDoc, SITE_DOC } = window.__fb;
     const snap = await getDoc(SITE_DOC);
+
     if(snap.exists()){
       const cloud = snap.data();
-      if(cloud.profile && typeof cloud.profile === 'object'){
-        profile = Object.assign({}, DEF, cloud.profile);
-      }
-      if(Array.isArray(cloud.links)){
-        links = cloud.links;
-      }
+
+      console.log("Cloud Data:", cloud);
+
+      profile = cloud.profile || profile;
+      links = cloud.links || [];
+
       applyProfile();
       renderLinks();
+
+      console.log("Links Loaded:", links);
     }
   }catch(e){
-    console.warn('Could not load cloud data, using built-in defaults.', e);
+    console.error("Load Error:", e);
   }
 }
-loadFromCloud(async function loadFromCloud(){
-  try{
-    const { getDoc, SITE_DOC } = window.__fb;
-
-    console.log("Loading Firestore...");
-
-    const snap = await getDoc(SITE_DOC);
-
-    console.log("Exists:", snap.exists());
-    console.log("Data:", snap.data());
-
-    if(snap.exists()){
-      const cloud = snap.data();
-      if(cloud.profile) profile = cloud.profile;
-      if(cloud.links) links = cloud.links;
-
-      applyProfile();
-      renderLinks();
-    }
-  }catch(e){
-    console.error(e);
-  }
-});
-</script>
-</body>
-</html>
