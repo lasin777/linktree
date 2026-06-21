@@ -8,6 +8,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyAcTWCnwX7qeSYtdvtH1XUfJqofzF0Vqng",
@@ -22,9 +23,11 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
   const SITE_DOC = doc(db, "site", "main");
+  const auth = getAuth(app);
 
-  // Expose helpers globally so the regular (non-module) script can use them
-  window.__fb = { db, SITE_DOC, getDoc, setDoc };
+  window.__fb = { db, SITE_DOC, getDoc, setDoc, auth, signInWithEmailAndPassword, signOut, onAuthStateChanged };
+  window.__fbReady = true;
+  window.dispatchEvent(new Event('fb-ready'));
 </script>
 <style>
 :root{
@@ -41,7 +44,6 @@ body::before{width:600px;height:600px;background:rgba(124,58,237,0.12);top:-200p
 body::after{width:500px;height:500px;background:rgba(168,85,247,0.08);bottom:-150px;right:-150px;}
 .page{position:relative;z-index:1;width:100%;max-width:480px;display:flex;flex-direction:column;align-items:center;}
 
-/* LOGO */
 .logo-wrap{cursor:pointer;user-select:none;margin-bottom:20px;}
 .logo-ring{width:110px;height:110px;border-radius:50%;
   background:linear-gradient(135deg,var(--accent),var(--accent2));
@@ -59,7 +61,6 @@ body::after{width:500px;height:500px;background:rgba(168,85,247,0.08);bottom:-15
 #profileImg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;border-radius:50%;z-index:1;display:none;}
 .logo-letter{font-family:'Rajdhani',sans-serif;font-size:42px;font-weight:700;color:#fff;letter-spacing:-1px;}
 
-/* NAME/BIO */
 .name{font-family:'Rajdhani',sans-serif;font-size:28px;font-weight:700;letter-spacing:1px;
   background:linear-gradient(135deg,#fff 30%,var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .badge{display:inline-flex;align-items:center;gap:5px;background:rgba(124,58,237,0.15);
@@ -68,7 +69,6 @@ body::after{width:500px;height:500px;background:rgba(168,85,247,0.08);bottom:-15
 .badge::before{content:'✦';font-size:8px;}
 .bio{color:var(--muted);font-size:13px;text-align:center;line-height:1.6;max-width:300px;margin-bottom:28px;}
 
-/* LINKS */
 .links{width:100%;display:flex;flex-direction:column;gap:12px;}
 .link-btn{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--border);
   border-radius:14px;padding:14px 18px;text-decoration:none;color:var(--text);
@@ -91,7 +91,6 @@ body::after{width:500px;height:500px;background:rgba(168,85,247,0.08);bottom:-15
 .empty-state{text-align:center;color:var(--muted);font-size:13px;padding:40px 0;}
 .footer{margin-top:40px;color:var(--muted);font-size:11px;text-align:center;letter-spacing:.5px;}
 
-/* OVERLAY */
 .overlay{display:none;position:fixed;inset:0;z-index:100;
   background:rgba(0,0,0,0.88);backdrop-filter:blur(8px);
   align-items:center;justify-content:center;padding:16px;}
@@ -109,7 +108,6 @@ body::after{width:500px;height:500px;background:rgba(168,85,247,0.08);bottom:-15
 .close-btn:hover{background:rgba(255,255,255,0.06);color:var(--text);}
 .modal-body{padding:20px;}
 
-/* TABS */
 .tabs{display:flex;gap:6px;margin-bottom:20px;background:rgba(255,255,255,0.03);
   border:1px solid var(--border);border-radius:12px;padding:5px;}
 .tab-btn{flex:1;padding:9px 6px;border-radius:8px;border:none;cursor:pointer;
@@ -120,7 +118,6 @@ body::after{width:500px;height:500px;background:rgba(168,85,247,0.08);bottom:-15
 .tab-panel{display:none;}
 .tab-panel.active{display:block;}
 
-/* FORMS */
 .field{margin-bottom:14px;}
 .field label{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:5px;letter-spacing:.5px;text-transform:uppercase;}
 .field input,.field textarea{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);
@@ -243,7 +240,6 @@ body::after{width:500px;height:500px;background:rgba(168,85,247,0.08);bottom:-15
   <div class="footer">© 2026 LAXX OFFICIAL · All rights reserved</div>
 </div>
 
-<!-- ADMIN OVERLAY -->
 <div class="overlay" id="overlay">
   <div class="modal">
     <div class="modal-header">
@@ -253,12 +249,12 @@ body::after{width:500px;height:500px;background:rgba(168,85,247,0.08);bottom:-15
     <div class="modal-body">
 
       <div id="loginSection">
-        <div class="field"><label>Username</label>
-          <input type="text" id="uInput" placeholder="Enter username" autocomplete="off"/></div>
+        <div class="field"><label>Email</label>
+          <input type="email" id="uInput" placeholder="Enter admin email" autocomplete="off"/></div>
         <div class="field"><label>Password</label>
           <input type="password" id="pInput" placeholder="Enter password" autocomplete="off"/></div>
         <button class="btn-primary" onclick="doLogin()">Sign In →</button>
-        <div class="error-msg" id="errMsg">❌ Invalid username or password.</div>
+        <div class="error-msg" id="errMsg">❌ Invalid email or password.</div>
       </div>
 
       <div id="adminSection" style="display:none;">
@@ -267,7 +263,6 @@ body::after{width:500px;height:500px;background:rgba(168,85,247,0.08);bottom:-15
           <button class="tab-btn" onclick="switchTab('profile',this)">🎨 Profile</button>
         </div>
 
-        <!-- LINKS TAB -->
         <div class="tab-panel active" id="tab-links">
           <div class="notice">
             <strong>☁️ How updates work</strong>
@@ -306,7 +301,6 @@ body::after{width:500px;height:500px;background:rgba(168,85,247,0.08);bottom:-15
           <button class="logout-btn" onclick="doLogout()">Sign Out</button>
         </div>
 
-        <!-- PROFILE TAB -->
         <div class="tab-panel" id="tab-profile">
           <div class="s-card">
             <div class="s-title"><span>👤</span> Profile Info</div>
@@ -346,7 +340,6 @@ body::after{width:500px;height:500px;background:rgba(168,85,247,0.08);bottom:-15
   </div>
 </div>
 
-<!-- ★ ALL SITE DATA LIVES HERE — gets rewritten on Save & Download ★ -->
 <script id="siteData" type="application/json">
 {
   "profile": {
@@ -365,19 +358,11 @@ body::after{width:500px;height:500px;background:rgba(168,85,247,0.08);bottom:-15
 </script>
 
 <script>
-// ── Capture raw HTML source RIGHT NOW before browser touches anything ─────────
-// We read the siteData text content (still accessible as a script tag with unknown type)
-// and store the full serialized data so we can rebuild the file perfectly on download.
 const _RAW_DATA_EL = document.getElementById('siteData');
 const _ORIGINAL_DATA_TEXT = _RAW_DATA_EL ? _RAW_DATA_EL.textContent : '{}';
 
-// ── SHA-256 (no plaintext credentials in code) ────────────────────────────────
-async function sha256(s){
-  const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
-  return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');
-}
+// (password hashing no longer needed — real Firebase Auth handles this now)
 
-// ── Load site data ────────────────────────────────────────────────────────────
 let siteData, links, profile;
 try { siteData = JSON.parse(_ORIGINAL_DATA_TEXT); } catch(e) { siteData = {}; }
 links   = Array.isArray(siteData.links)   ? siteData.links   : [];
@@ -390,7 +375,6 @@ let loggedIn = false, selectedEmoji = '🔗', selectedImgUrl = '';
 const EMOJIS = ['📸','▶️','🎵','✖️','💬','🎮','🎧','💻','🌐','📧','🛒','💰','🎁','📱','🔗','🎬','📡','🎤','🏆','❤️','⚡','🔥','💎','🌟','👑'];
 const SWATCHES = ['#7c3aed','#a855f7','#ec4899','#ef4444','#f97316','#eab308','#22c55e','#06b6d4','#3b82f6','#e2e8f0'];
 
-// ── Color ─────────────────────────────────────────────────────────────────────
 function hexRgb(h){return{r:parseInt(h.slice(1,3),16),g:parseInt(h.slice(3,5),16),b:parseInt(h.slice(5,7),16)};}
 function lighten(h,a){const{r,g,b}=hexRgb(h);const c=v=>Math.min(255,v+a).toString(16).padStart(2,'0');return`#${c(r)}${c(g)}${c(b)}`;}
 function applyColor(h){
@@ -403,7 +387,6 @@ function applyColor(h){
 function onColorInput(v){document.getElementById('colorHex').value=v;applyColor(v);profile.color=v;}
 function onHexInput(v){if(/^#[0-9a-fA-F]{6}$/.test(v)){document.getElementById('colorPicker').value=v;applyColor(v);profile.color=v;}}
 
-// ── Swatches ──────────────────────────────────────────────────────────────────
 function buildSwatches(){
   document.getElementById('swatchRow').innerHTML = SWATCHES.map(c=>
     `<div class="swatch${c===profile.color?' active':''}" style="background:${c}" onclick="pickSwatch('${c}',this)"></div>`).join('');
@@ -416,7 +399,6 @@ function pickSwatch(c,el){
   applyColor(c); profile.color=c;
 }
 
-// ── Emoji picker ──────────────────────────────────────────────────────────────
 function buildEmojiPicker(){
   document.getElementById('iconPicker').innerHTML = EMOJIS.map(e=>
     `<div class="icon-pill" onclick="pickEmoji('${e}',this)">${e}</div>`).join('');
@@ -448,7 +430,6 @@ function updateIconPreview(emoji,imgUrl){
   } else { em.textContent=emoji||'🔗'; }
 }
 
-// ── Logo triple-click (silent) ────────────────────────────────────────────────
 let cc=0, ct;
 document.getElementById('logoWrap').addEventListener('click',()=>{
   const r=document.getElementById('logoRing');
@@ -458,7 +439,6 @@ document.getElementById('logoWrap').addEventListener('click',()=>{
   ct=setTimeout(()=>{cc=0;},1400);
 });
 
-// ── Overlay ───────────────────────────────────────────────────────────────────
 function openAdmin(){document.getElementById('overlay').classList.add('active');if(loggedIn)showPanel();else showLogin();}
 function closeAdmin(){document.getElementById('overlay').classList.remove('active');}
 document.getElementById('overlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeAdmin();});
@@ -483,18 +463,32 @@ function switchTab(name,btn){
   document.getElementById('tab-'+name).classList.add('active');
 }
 
-// ── Auth ──────────────────────────────────────────────────────────────────────
 async function doLogin(){
   const u=document.getElementById('uInput').value.trim();
-  const p=document.getElementById('pInput').value.trim();
-  const ref=await sha256('laxx');
-  if(await sha256(u)===ref && await sha256(p)===ref){loggedIn=true;showPanel();}
-  else{document.getElementById('errMsg').classList.add('show');}
+  const p=document.getElementById('pInput').value;
+  const errEl=document.getElementById('errMsg');
+  errEl.classList.remove('show');
+  if(!u || !p){ errEl.textContent='❌ Please enter email and password.'; errEl.classList.add('show'); return; }
+  try{
+    if(!window.__fb){ await waitForFirebase(4000); }
+    if(!window.__fb) throw new Error('Connection not ready, try again.');
+    const { auth, signInWithEmailAndPassword } = window.__fb;
+    await signInWithEmailAndPassword(auth, u, p);
+    loggedIn=true; showPanel();
+  }catch(e){
+    console.error('Login failed:', e);
+    errEl.textContent='❌ Invalid email or password.';
+    errEl.classList.add('show');
+  }
 }
 document.getElementById('pInput').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
-function doLogout(){loggedIn=false;showLogin();}
+async function doLogout(){
+  try{
+    if(window.__fb){ await window.__fb.signOut(window.__fb.auth); }
+  }catch(e){ console.error('Sign out error:', e); }
+  loggedIn=false; showLogin();
+}
 
-// ── Links CRUD ────────────────────────────────────────────────────────────────
 function addLink(){
   const title=document.getElementById('newTitle').value.trim();
   const sub=document.getElementById('newSub').value.trim();
@@ -517,7 +511,6 @@ function deleteLink(i){if(!confirm('Delete this link?'))return;links.splice(i,1)
 function moveUp(i){if(i===0)return;[links[i-1],links[i]]=[links[i],links[i-1]];renderLinks();renderAdminLinks();}
 function moveDown(i){if(i===links.length-1)return;[links[i+1],links[i]]=[links[i],links[i+1]];renderLinks();renderAdminLinks();}
 
-// ── Profile ───────────────────────────────────────────────────────────────────
 function populateProfileFields(){
   document.getElementById('profName').value=profile.name||'';
   document.getElementById('profBadge').value=profile.badge||'';
@@ -548,7 +541,6 @@ function livePreview(){
   applyProfile();
 }
 
-// ── Apply profile to public page ──────────────────────────────────────────────
 function applyProfile(){
   document.getElementById('displayName').textContent=profile.name;
   document.getElementById('displayBadge').textContent=profile.badge;
@@ -563,22 +555,27 @@ function applyProfile(){
   if(profile.color) applyColor(profile.color);
 }
 
-// ── ★ SAVE TO CLOUD (Firestore) ───────────────────────────────────────────────
-// Writes profile + links to Firestore so EVERY device loads the same data
-// instantly on next page load/refresh — no manual file re-upload needed.
+function waitForFirebase(timeoutMs){
+  return new Promise(resolve=>{
+    if(window.__fb){resolve();return;}
+    const onReady=()=>{clearTimeout(t);window.removeEventListener('fb-ready',onReady);resolve();};
+    window.addEventListener('fb-ready', onReady);
+    const t=setTimeout(()=>{window.removeEventListener('fb-ready',onReady);resolve();}, timeoutMs);
+  });
+}
+
 async function saveAndDownload(){
-  // sync profile fields
   profile.name   = document.getElementById('profName').value.trim()  || profile.name;
   profile.badge  = document.getElementById('profBadge').value.trim() || profile.badge;
   profile.bio    = document.getElementById('profBio').value.trim()   || profile.bio;
   profile.img    = document.getElementById('profImg').value.trim();
   profile.color  = document.getElementById('colorPicker').value      || profile.color;
 
-  const showMsgs = (ok)=>{
+  const showMsgs = (ok, text)=>{
     ['downloadMsg','downloadMsg2'].forEach(id=>{
       const el=document.getElementById(id);
       if(el){
-        el.textContent = ok ? '✅ Saved! All devices will see this on next refresh.' : '❌ Save failed. Check your internet connection.';
+        el.textContent = text || (ok ? '✅ Saved! All devices will see this on next refresh.' : '❌ Save failed. Check your internet connection.');
         el.style.color = ok ? '' : 'var(--danger)';
         el.classList.add('show');
         setTimeout(()=>el.classList.remove('show'),5000);
@@ -587,17 +584,19 @@ async function saveAndDownload(){
   };
 
   try{
-    if(!window.__fb) throw new Error('Firebase not loaded');
+    if(!window.__fb){
+      await waitForFirebase(4000);
+    }
+    if(!window.__fb) throw new Error('Firebase not loaded (check network/ad-blocker)');
     const { setDoc, SITE_DOC } = window.__fb;
     await setDoc(SITE_DOC, { profile, links });
     showMsgs(true);
   }catch(e){
     console.error('Cloud save failed:', e);
-    showMsgs(false);
+    showMsgs(false, '❌ Save failed: ' + (e && e.message ? e.message : 'unknown error'));
   }
 }
 
-// ── Render public links ───────────────────────────────────────────────────────
 function renderLinks(){
   const el=document.getElementById('linkList');
   if(!links.length){el.innerHTML='<div class="empty-state">No links yet.</div>';return;}
@@ -621,7 +620,6 @@ function renderLinks(){
   });
 }
 
-// ── Render admin link list ────────────────────────────────────────────────────
 function renderAdminLinks(){
   const el=document.getElementById('adminLinkList');
   if(!links.length){el.innerHTML='<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px 0;">No links yet. Add one above!</div>';return;}
@@ -650,36 +648,63 @@ function renderAdminLinks(){
 
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
-// ── Init ──────────────────────────────────────────────────────────────────────
-// ★ Capture full page HTML BEFORE we overwrite siteData, so saveAndDownload
-// (kept as a backup/manual option) still works off the original markup.
-const _PAGE_HTML = new XMLSerializer().serializeToString(document);
-
 buildEmojiPicker();
 applyProfile();
 renderLinks();
 
-// ── Load from Firestore (cloud sync across all devices) ───────────────────────
 async function loadFromCloud(){
   try{
-    if(!window.__fb) return; // firebase module didn't load (offline/blocked)
+    if(!window.__fb){
+      await waitForFirebase(5000);
+    }
+    if(!window.__fb){
+      console.warn('Firebase did not initialize in time — showing local defaults.');
+      return;
+    }
     const { getDoc, SITE_DOC } = window.__fb;
     const snap = await getDoc(SITE_DOC);
+
     if(snap.exists()){
       const cloud = snap.data();
-      if(cloud.profile && typeof cloud.profile === 'object'){
-        profile = Object.assign({}, DEF, cloud.profile);
-      }
-      if(Array.isArray(cloud.links)){
-        links = cloud.links;
-      }
+      console.log("Cloud Data:", cloud);
+
+      profile = Object.assign({}, DEF, cloud.profile || {});
+      links = Array.isArray(cloud.links) ? cloud.links : [];
+
       applyProfile();
       renderLinks();
+
+      if(loggedIn){
+        populateProfileFields();
+        buildSwatches();
+        renderAdminLinks();
+      }
+
+      console.log("Links Loaded:", links);
+    } else {
+      console.log("No cloud document found yet — using local defaults. Save once from the admin panel to create it.");
     }
   }catch(e){
-    console.warn('Could not load cloud data, using built-in defaults.', e);
+    console.error("Load Error:", e);
   }
 }
+
+// ★ THE FIX: this call was missing before, so the page never pulled
+// your saved profile/links from Firestore — it just showed the
+// hardcoded defaults in the siteData script tag every time.
 loadFromCloud();
+
+// Keep loggedIn in sync with real Firebase Auth session (persists across refresh)
+(async function watchAuth(){
+  if(!window.__fb){ await waitForFirebase(5000); }
+  if(!window.__fb || !window.__fb.onAuthStateChanged) return;
+  window.__fb.onAuthStateChanged(window.__fb.auth, (user)=>{
+    loggedIn = !!user;
+    if(document.getElementById('overlay').classList.contains('active')){
+      if(loggedIn) showPanel(); else showLogin();
+    }
+  });
+})();
 </script>
 </body>
+</html>
